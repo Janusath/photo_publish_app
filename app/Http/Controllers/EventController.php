@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\category;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +16,8 @@ class EventController extends Controller
      public function index()
      {
 
-         return view('event.event');
+        $categorys=category::all();
+         return view('event.event',compact('categorys'));
 
      }
      /**
@@ -115,7 +117,7 @@ class EventController extends Controller
              $file = $request->file('thumbnail_image');
              $fileName = time() . '.' . $file->getClientOriginalExtension();
              $file->move(public_path('images'), $fileName);
-             
+
              $oldimagePath = public_path('images') . '/' . $event->thumbnail_image;
              if (file_exists($oldimagePath)) {
                 unlink($oldimagePath);
@@ -126,7 +128,7 @@ class EventController extends Controller
          }
 
          //image stop
-         
+
          $eventData = [
 
             'cate_id' => $request->cate_id,

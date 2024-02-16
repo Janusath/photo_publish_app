@@ -29,8 +29,12 @@
 
 
                                         <div class="col-md-12 mb-3">
-                                            <label for="cad_id">Cat ID</label>
-                                            <input type="text" name="cate_id" id="cate_id" class="form-control" placeholder="cate_id" required>
+                                            <select class="form-select" name="cate_id" id="cate_id" aria-label="Default select example" required>
+                                                <option selected disabled>Select the Cat ID</option>
+                                                @foreach($categorys as $category)
+                                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                            @endforeach
+                                              </select>
                                         </div>
 
                                         <div class="col-md-12 mb-3">
@@ -81,9 +85,14 @@
 
                                        <div class="row">
 
+                                   
                                         <div class="col-md-12 mb-3">
-                                            <label for="cad_id">Cat ID</label>
-                                            <input type="text" name="cate_id" id="edit_cate_id" class="form-control" placeholder="cate_id" required>
+                                            <select class="form-select" name="cate_id" id="edit_cate_id" aria-label="Default select example" required>
+                                                <option selected disabled>Select the Cat ID</option>
+                                                @foreach($categorys as $category)
+                                                <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                            @endforeach
+                                              </select>
                                         </div>
 
                                         <div class="col-md-12 mb-3">
@@ -104,7 +113,7 @@
                                         <div class="mt-2" id="image">
 
                                         </div>
-                                       
+
 
                                     </div>
                                     <div class="modal-footer">
