@@ -21,22 +21,51 @@ class PhotosController extends Controller
      /**
       * Store a newly created resource in storage.
       */
-     public function store(Request $request)
-     {
+    //  public function store(Request $request)
+    //  {
 
-        $imageFile=time().'.'.$request->thumbnail_image->extension();
-        $request->thumbnail_image->move(public_path('images'),$imageFile);
+    //     $imageFile=time().'.'.$request->image_url->extension();
+    //     $request->image_url->move(public_path('images'),$imageFile);
 
-         $photoData = [
+    //      $photoData = [
 
-             'event_id' => $request->event_id,
-             'image_url' => $imageFile,
-         ];
-         photos::create($photoData);
-         return response()->json([
-             'status' => 200,
-         ]);
-     }
+    //          'event_id' => $request->event_id,
+    //          'image_url' => $imageFile,
+    //      ];
+    //      photos::create($photoData);
+    //      return response()->json([
+    //          'status' => 200,
+    //      ]);
+    //  }
+
+    public function store(Request $request)
+{
+    $imagePaths = [];
+
+    // Loop through each uploaded file
+    foreach ($request->file('image_url') as $image) {
+        $imageFile = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('images'), $imageFile);
+
+        // Store the image path in the array
+        $imagePaths[] = $imageFile;
+    }
+
+    // Loop through each uploaded image path and create a new photo record
+    foreach ($imagePaths as $path) {
+        $photoData = [
+            'event_id' => $request->event_id,
+            'image_url' => $path,
+        ];
+
+        Photos::create($photoData);
+    }
+
+    return response()->json([
+        'status' => 200,
+    ]);
+}
+
 
      /**
       * Display the specified resource.
@@ -61,7 +90,7 @@ class PhotosController extends Controller
              foreach ($photos as $photo) {
                  $output .= '<tr>
                  <td>' . $photo->id . '</td>
-                 <td><img src="images/' . $photo->image_url . '" width="50" class="rounded-circle"></td>
+                 <td><img src="images/' . $photo->image_url . '" width="60" height="60" class="rounded-circle"></td>
                  <td>' . $photo->event_id . '</td>
 
 
@@ -131,11 +160,11 @@ class PhotosController extends Controller
      public function delete(Request $request) {
          $id = $request->id;
          $photo = photos::find($id);
-         $imagePath = public_path('images') . '/' . $photo->thumbnail_image;
+         $imagePath = public_path('images') . '/' . $photo->image_url;
          if (file_exists($imagePath)) {
             unlink($imagePath);
      }
-            photos::destroy($id);
+         photos::destroy($id);
    }
 
 }

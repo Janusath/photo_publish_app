@@ -29,6 +29,7 @@
 
 
                                         <div class="col-md-12 mb-3">
+                                            <label for="date">Cate ID</label>
                                             <select class="form-select" name="cate_id" id="cate_id" aria-label="Default select example" required>
                                                 <option selected disabled>Select the Cat ID</option>
                                                 @foreach($categorys as $category)
@@ -55,6 +56,11 @@
 
                                         <div class="col-md-12 mt-2">
                                             <img id="selectedImage" src="#" alt="Selected Image" class="img-fluid img-thumbnail" style=" width:100px;border-radius:7px;display: none;">
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label for="thumbnail_image2">Select Multiple Image</label>
+                                            <input type="file" name="files[]" id="thumbnail_image2" class="form-control" multiple required >
                                         </div>
 
                                     </div>
@@ -85,8 +91,9 @@
 
                                        <div class="row">
 
-                                   
+
                                         <div class="col-md-12 mb-3">
+                                            <label for="date">Cate ID</label>
                                             <select class="form-select" name="cate_id" id="edit_cate_id" aria-label="Default select example" required>
                                                 <option selected disabled>Select the Cat ID</option>
                                                 @foreach($categorys as $category)

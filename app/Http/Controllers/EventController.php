@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use Illuminate\Http\Request;
-use App\Models\Event;
+use App\Models\event;
+use App\Models\photos;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -41,7 +42,21 @@ class EventController extends Controller
              'date' => $request->date,
              'thumbnail_image' => $imageFile,
          ];
-         event::create($eventData);
+
+         $events = event::create($eventData);
+
+         $files = $request->file('files');
+
+         foreach ($files as $file) {
+             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+             $file->move(public_path('images'), $filename);
+
+                $table = new photos();
+                 $table->event_id =  $events->id;
+                 $table->image_url =  $filename;
+                 $table->save();
+
+         }
          return response()->json([
              'status' => 200,
          ]);
@@ -52,10 +67,6 @@ class EventController extends Controller
       */
      public function show()
      {
-         // $id = auth()->guard('admin_user')->user()->id;
-
-         // Get events based on the user's adminReNo
-         // $events = Event::where('adminReNo', $id)->get();
          $events = event::all();
          $output = '';
          if ($events->count() > 0) {
@@ -153,6 +164,6 @@ class EventController extends Controller
          if (file_exists($imagePath)) {
             unlink($imagePath);
         }
-        Event::destroy($id);
+        event::destroy($id);
      }
 }

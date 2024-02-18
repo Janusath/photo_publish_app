@@ -35,7 +35,7 @@
 
                                         <div class="col-md-12 mb-3">
                                             <label for="image_url">Select Image</label>
-                                            <input type="file" name="image_url" id="image_url" class="form-control">
+                                            <input type="file" name="image_url[]" id="image_url" class="form-control">
                                         </div>
 
                                         <div class="col-md-12 mt-2">
